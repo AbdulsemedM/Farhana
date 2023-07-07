@@ -1,8 +1,26 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { HiEye, HiEyeOff } from "react-icons/hi";
+import { API } from "../../utils/API";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 const Users = () => {
+  const MySwal = withReactContent(Swal);
+  let timerInterval;
+  const Alert = (message, icon) => {
+    MySwal.fire({
+      icon: icon,
+      position: "top-end",
+      html: message ? message : "message not returned",
+      timer: 1500,
+      timerProgressBar: true,
+      showConfirmButton: false,
+      willClose: () => {
+        clearInterval(timerInterval);
+      },
+    });
+  };
   const [data, setData] = useState({
     fullName: "",
     userName: "",
@@ -10,6 +28,7 @@ const Users = () => {
     confirmPassword: "",
     email: "",
     phoneNumber: "",
+    role: "admin",
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -26,13 +45,30 @@ const Users = () => {
   };
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     // Handle form submission here
-    console.log("Submitted");
-    console.log("Username:", data.fullName);
-    console.log("Password:", data.userName);
-    navigate("/user");
+    try {
+      console.log(data);
+      const response = await API.post("/auth/signup", data).then((res) => res);
+      console.log(response.status);
+      if (response.status === 200) {
+        Alert("user created successfully", "success");
+        setData({
+          fullName: "",
+          userName: "",
+          password: "",
+          confirmPassword: "",
+          email: "",
+          phoneNumber: "",
+          role: "admin",
+        });
+      }
+    } catch (error) {
+      Alert("Failed to Create User", "error");
+    }
+
+    navigate("/admin/users");
   };
 
   const toggleShowPassword = () => {
@@ -140,12 +176,12 @@ const Users = () => {
               </button>
             </div>
             {data.password !== data.confirmPassword && (
-          <div className="text-red mt-2">
-            Password and Confirm Password do not match.
+              <div className="text-red mt-2">
+                Password and Confirm Password do not match.
+              </div>
+            )}
           </div>
-        )}
-          </div>
-          
+
           <div className="flex flex-col">
             <label htmlFor="email" className="text-lg font-semibold text-white">
               Email
@@ -161,7 +197,10 @@ const Users = () => {
             />
           </div>
           <div className="flex flex-col">
-            <label htmlFor="phoneNumber" className="text-lg font-semibold text-white">
+            <label
+              htmlFor="phoneNumber"
+              className="text-lg font-semibold text-white"
+            >
               Phone Number
             </label>
             <input
@@ -175,8 +214,6 @@ const Users = () => {
             />
           </div>
         </div>
-
-       
 
         <div className="text-center font-bold p-4">
           <button

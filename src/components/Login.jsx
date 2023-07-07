@@ -2,12 +2,16 @@ import React, { useState } from "react";
 import img from "../constants";
 import Navbar from "../containers/Navbar";
 import { useNavigate } from "react-router-dom";
+import { API } from "../utils/API";
+import jwtDecode from "jwt-decode";
 
 const Login = () => {
   const [data, setData] = useState({
-    username: "",
+    userName: "",
     password: "",
   });
+  const [accessToken, setAccessToken] = useState();
+  const [message, setMessage] = useState()
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -18,13 +22,41 @@ const Login = () => {
   };
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     // Handle form submission here
-    console.log("Submitted");
-    console.log("Username:", data.username);
-    console.log("Password:", data.password);
-    navigate("/admin")
+    try {
+      console.log("data", data);
+      const response = await API.post("/auth/signin", data).then((res) => res);
+      console.log(response);
+      if (response.status === 200) {
+        const access_token = response.data.token;
+        setAccessToken(access_token);
+        const decoded = jwtDecode(access_token);
+        console.log(decoded);
+        navigate("/admin");
+
+        // console.log(decoded);
+
+        // const rememberMe = event.target.elements.rememberMe.checked;
+        // if (rememberMe) {
+        //   localStorage.setItem("userName", data.userName);
+        //   localStorage.setItem("password", data.password);
+        // }
+      }
+    } catch (error) {
+      // console.log(error);
+      if (error.code === "ERR_BAD_REQUEST") {
+        setMessage("Wrong userName or password");
+      } else if (error.code === "ERR_NETWORK") {
+        setMessage("Network Error");
+      }
+      // setLoading(false);
+    }
+
+    // console.log("Submitted");
+    // console.log("UserName:", data.userName);
+    // console.log("Password:", data.password);
   };
 
   return (
@@ -46,16 +78,16 @@ const Login = () => {
             <form className="max-w-lg mx-auto" onSubmit={handleSubmit}>
               <div className="mb-4">
                 <label
-                  htmlFor="username"
+                  htmlFor="userName"
                   className="text-lg font-semibold text-night"
                 >
-                  Username
+                  UserName
                 </label>
                 <input
                   type="text"
-                  id="username"
-                  name="username"
-                  value={data.username}
+                  id="userName"
+                  name="userName"
+                  value={data.userName}
                   onChange={handleInputChange}
                   className="border border-gray-300 px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:lime2 w-full"
                   required
