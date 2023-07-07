@@ -72,15 +72,11 @@ const Sidebar = () => {
 
   const subMenusList = [
     {
-      name: "build",
-      icon: RiBuilding3Line,
-      menus: ["auth", "app settings", "stroage", "hosting"],
+      name: "Settings",
+      icon: SlSettings,
+      menus: ["change password", "privacy", "policy", "security"],
     },
-    {
-      name: "analytics",
-      icon: TbReportAnalytics,
-      menus: ["dashboard", "realtime", "events"],
-    },
+   
   ];
 
   return (
@@ -141,7 +137,7 @@ const Sidebar = () => {
             {(open || isTabletMid) && (
               <div className="border-y py-5 border-slate-300 ">
                 <small className="pl-3 text-white inline-block mb-2">
-                  Product categories
+                  Additional
                 </small>
                 {subMenusList?.map((menu) => (
                   <div key={menu.name} className="flex flex-col gap-1">
@@ -150,12 +146,12 @@ const Sidebar = () => {
                 ))}
               </div>
             )}
-            <li>
+            {/* <li>
               <NavLink to={"settings"} className="link">
                 <SlSettings size={23} className="min-w-max" />
                 Settings
               </NavLink>
-            </li>
+            </li> */}
           </ul>
           {/* {open && (
             <div className="flex-1 text-sm z-50  max-h-48 my-auto  whitespace-pre   w-full  font-medium  ">

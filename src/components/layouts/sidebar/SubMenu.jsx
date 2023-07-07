@@ -34,7 +34,7 @@ const SubMenu = ({ data }) => {
           <li key={menu}>
             {/* className="hover:text-blue-600 hover:font-medium" */}
             <NavLink
-              to={`${data.name}/${menu}`}
+              to={`${data.name}/${menu.replace(" ", "")}`}
               className="link !bg-transparent capitalize"
             >
               {menu}
