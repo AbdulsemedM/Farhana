@@ -2,11 +2,10 @@ import { userActionTypes } from "./userType";
 
 const INITIAL_STATE = {
   access_token: null,
-  refresh_token: null,
-  roles: [],
-  unionId: null,
-  prCooperativeId: null,
+  role: null,
   userProfile: {},
+  user: [],
+  loading: false,
 };
 
 const userReducer = (state = INITIAL_STATE, action) => {
@@ -16,16 +15,33 @@ const userReducer = (state = INITIAL_STATE, action) => {
         ...state,
         access_token: action.payload,
       };
-    case userActionTypes.TOGGLE_ROLE:
+    case userActionTypes.ROLE:
       return {
         ...state,
-        roles: action.payload,
+        role: action.payload,
       };
 
     case userActionTypes.SET_USER_PROFILE:
       return {
         ...state,
         userProfile: action.payload,
+      };
+    case userActionTypes.FETCH_START:
+      return {
+        ...state,
+        loading: action.payload,
+      };
+    case userActionTypes.GET_UNION:
+      return {
+        ...state,
+        user: action.payload,
+        loading: false,
+      };
+    case userActionTypes.GET_UNION_ERROR:
+      return {
+        ...state,
+        user: [],
+        loading: false,
       };
     default:
       return state;

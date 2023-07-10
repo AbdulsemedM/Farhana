@@ -7,7 +7,7 @@ export const selectAccessToken = createSelector(
   (user) => user.access_token
 );
 
-export const selectRole = createSelector([selectData], (user) => user.roles[0]);
+export const selectRole = createSelector([selectData], (user) => user.role);
 
 export const selectUserProfile = createSelector(
   [selectData],

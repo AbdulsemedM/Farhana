@@ -1,17 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import img from "../constants";
 import Navbar from "../containers/Navbar";
 import { useNavigate } from "react-router-dom";
 import { API } from "../utils/API";
 import jwtDecode from "jwt-decode";
+import { connect } from "react-redux";
+import { setRole, setToken, setUserProfile } from "../redux/user/userAction";
 
-const Login = () => {
+const Login = ({ setRole, setProfile, setAccessToken }) => {
   const [data, setData] = useState({
     userName: "",
     password: "",
   });
-  const [accessToken, setAccessToken] = useState();
-  const [message, setMessage] = useState()
+  // const [accessToken, setAccessToken] = useState();
+  const [message, setMessage] = useState();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -22,18 +24,27 @@ const Login = () => {
   };
   const navigate = useNavigate();
 
+  useEffect(() => {
+    setAccessToken("");
+    setRole("");
+    setProfile({});
+  });
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     // Handle form submission here
     try {
-      console.log("data", data);
+      // console.log("data", data);
       const response = await API.post("/auth/signin", data).then((res) => res);
-      console.log(response);
+      console.log(response.data);
       if (response.status === 200) {
         const access_token = response.data.token;
-        setAccessToken(access_token);
         const decoded = jwtDecode(access_token);
-        console.log(decoded);
+        console.log(decoded?.id);
+        console.log(access_token);
+        setAccessToken(access_token);
+        setRole(response.data.role);
+        setProfile(response.data);
         navigate("/admin");
 
         // console.log(decoded);
@@ -45,13 +56,16 @@ const Login = () => {
         // }
       }
     } catch (error) {
-      // console.log(error);
+      // console.log(error.response);
       if (error.code === "ERR_BAD_REQUEST") {
         setMessage("Wrong userName or password");
       } else if (error.code === "ERR_NETWORK") {
         setMessage("Network Error");
+      } else {
+        setMessage("Something went wrong");
       }
       // setLoading(false);
+      console.log(message);
     }
 
     // console.log("Submitted");
@@ -75,6 +89,7 @@ const Login = () => {
             <h2 className="text-2xl font-bold text-center text-night mb-4">
               Login
             </h2>
+            <h1 className="text-red text-sm">{message ? message : ""}</h1>
             <form className="max-w-lg mx-auto" onSubmit={handleSubmit}>
               <div className="mb-4">
                 <label
@@ -129,4 +144,10 @@ const Login = () => {
   );
 };
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  setAccessToken: (item) => dispatch(setToken(item)),
+  setProfile: (item) => dispatch(setUserProfile(item)),
+  setRole: (item) => dispatch(setRole(item)),
+});
+
+export default connect(null, mapDispatchToProps)(Login);

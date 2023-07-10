@@ -1,3 +1,4 @@
+import userService from "../service/user.service";
 import { userActionTypes } from "./userType";
 
 export const setToken = (item) => ({
@@ -11,6 +12,24 @@ export const setUserProfile = (item) => ({
 });
 
 export const setRole = (item) => ({
-  type: userActionTypes.TOGGLE_ROLE,
+  type: userActionTypes.ROLE,
   payload: item,
 });
+export const getUserData = () => async (dispatch) => {
+  try {
+    dispatch({
+      type: userActionTypes.FETCH_START,
+      payload: true,
+    });
+    const unionData = await userService.fetchUser();
+    dispatch({
+      type: userActionTypes.GET_USER,
+      payload: unionData,
+    });
+  } catch (error) {
+    dispatch({
+      type: userActionTypes.GET_USER_ERROR,
+      payload: error,
+    });
+  }
+};

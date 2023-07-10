@@ -4,8 +4,11 @@ import { HiEye, HiEyeOff } from "react-icons/hi";
 import { API } from "../../utils/API";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
+import { selectRole } from "../../redux/user/userSelector";
 
-const Users = () => {
+const Users = ({ roles }) => {
   const MySwal = withReactContent(Swal);
   let timerInterval;
   const Alert = (message, icon) => {
@@ -227,5 +230,7 @@ const Users = () => {
     </div>
   );
 };
-
-export default Users;
+const mapStateToProps = createStructuredSelector({
+  roles: selectRole,
+});
+export default connect(mapStateToProps)(Users);

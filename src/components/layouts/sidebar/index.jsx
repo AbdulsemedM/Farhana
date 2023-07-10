@@ -5,21 +5,33 @@ import { motion } from "framer-motion";
 
 // * React icons
 import { IoIosArrowBack } from "react-icons/io";
-import { SlSettings } from "react-icons/sl";
+import { SlLogout, SlSettings } from "react-icons/sl";
 import { AiOutlineAppstore, AiOutlineUserAdd } from "react-icons/ai";
-import { TbReportAnalytics } from "react-icons/tb";
-import { RiBuilding3Line } from "react-icons/ri";
 import { useMediaQuery } from "react-responsive";
 import { MdMenu } from "react-icons/md";
 import { NavLink, useLocation } from "react-router-dom";
 import img from "../../../constants";
 import { FaChild, FaListUl, FaUsers } from "react-icons/fa";
+import { connect } from "react-redux";
+import {
+  setRole,
+  setToken,
+  setUserProfile,
+} from "../../../redux/user/userAction";
 
-const Sidebar = () => {
+const Sidebar = ({ setRole, setProfile, setAccessToken }) => {
   let isTabletMid = useMediaQuery({ query: "(max-width: 768px)" });
   const [open, setOpen] = useState(isTabletMid ? false : true);
   const sidebarRef = useRef();
   const { pathname } = useLocation();
+  // const handleLogout = () => {
+  //   // Add your logout logic here
+  //   // For example, dispatch an action to clear user authentication or remove tokens
+  //   console.log("Logout clicked");
+  //   dispatch(setAccessToken(""));
+  //   dispatch(setRole(""));
+  //   setUserProfile({});
+  // };
 
   useEffect(() => {
     if (isTabletMid) {
@@ -76,7 +88,6 @@ const Sidebar = () => {
       icon: SlSettings,
       menus: ["change password", "privacy", "policy", "security"],
     },
-   
   ];
 
   return (
@@ -123,7 +134,7 @@ const Sidebar = () => {
             </li>
             <li>
               <NavLink to={"users"} className="link">
-                < AiOutlineUserAdd size={23} className="min-w-max" />
+                <AiOutlineUserAdd size={23} className="min-w-max" />
                 Add User
               </NavLink>
             </li>
@@ -146,12 +157,20 @@ const Sidebar = () => {
                 ))}
               </div>
             )}
-            {/* <li>
-              <NavLink to={"settings"} className="link">
-                <SlSettings size={23} className="min-w-max" />
-                Settings
+            <li>
+              <NavLink
+                to={"/login"}
+                className="link"
+                onClick={() => {
+                  setAccessToken("");
+                  setRole("");
+                  setProfile({});
+                }}
+              >
+                <SlLogout size={23} className="min-w-max" />
+                Logout
               </NavLink>
-            </li> */}
+            </li>
           </ul>
           {/* {open && (
             <div className="flex-1 text-sm z-50  max-h-48 my-auto  whitespace-pre   w-full  font-medium  ">
@@ -196,5 +215,10 @@ const Sidebar = () => {
     </div>
   );
 };
+const mapDispatchToProps = (dispatch) => ({
+  setAccessToken: (item) => dispatch(setToken(item)),
+  setProfile: (item) => dispatch(setUserProfile(item)),
+  setRole: (item) => dispatch(setRole(item)),
+});
 
-export default Sidebar;
+export default connect(null, mapDispatchToProps)(Sidebar);

@@ -19,7 +19,7 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/login" element={<Login />} />
         <Route path="/donate" element={<DonateUs />} />
-        <Route element={<RequireAuth allowedRoles={"Admin"} />}>
+        <Route element={<RequireAuth allowedRoles={"admin"} />}>
           <Route path="/admin/*" element={<Admin />} />
         </Route>
       </Routes>
