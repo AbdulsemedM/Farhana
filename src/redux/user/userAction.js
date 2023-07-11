@@ -21,10 +21,10 @@ export const getUserData = () => async (dispatch) => {
       type: userActionTypes.FETCH_START,
       payload: true,
     });
-    const unionData = await userService.fetchUser();
+    const userData = await userService.fetchUser();
     dispatch({
       type: userActionTypes.GET_USER,
-      payload: unionData,
+      payload: userData,
     });
   } catch (error) {
     dispatch({

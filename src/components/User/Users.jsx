@@ -6,9 +6,9 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
-import { selectRole } from "../../redux/user/userSelector";
+import { selectAccessToken, selectRole } from "../../redux/user/userSelector";
 
-const Users = ({ roles }) => {
+const Users = ({ roles, access_token }) => {
   const MySwal = withReactContent(Swal);
   let timerInterval;
   const Alert = (message, icon) => {
@@ -24,6 +24,10 @@ const Users = ({ roles }) => {
       },
     });
   };
+  console.log(access_token)
+  // const params = {
+  //   access_token: access_token, // Set the access token in the Authorization header
+  // };
   const [data, setData] = useState({
     fullName: "",
     userName: "",
@@ -47,13 +51,23 @@ const Users = ({ roles }) => {
     }));
   };
   const navigate = useNavigate();
+  // const headers = {
+  //   Authorization: `Bearer ${access_token}`,
+  // };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     // Handle form submission here
     try {
       console.log(data);
-      const response = await API.post("/auth/signup", data).then((res) => res);
+      // console.log("access", access_token);
+      // API.defaults.headers.common["Authorization"] = `Bearer ${access_token}`;
+      // API.defaults.withCredentials = true;
+      const response = await API.post(`/users/register`, data, {
+        headers: {
+          access_token: access_token,
+        },
+      }).then((res) => res);
       console.log(response.status);
       if (response.status === 200) {
         Alert("user created successfully", "success");
@@ -232,5 +246,6 @@ const Users = ({ roles }) => {
 };
 const mapStateToProps = createStructuredSelector({
   roles: selectRole,
+  access_token: selectAccessToken,
 });
 export default connect(mapStateToProps)(Users);

@@ -1,17 +1,53 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { API } from "../../utils/API";
+import { connect } from "react-redux";
+import { selectAccessToken, selectRole } from "../../redux/user/userSelector";
+import { createStructuredSelector } from "reselect";
+import withReactContent from "sweetalert2-react-content";
+import Swal from "sweetalert2";
 
-const RegisterOrphan = () => {
+const RegisterOrphan = ({ access_token, role }) => {
+  const MySwal = withReactContent(Swal);
+  let timerInterval;
+  const Alert = (message, icon) => {
+    MySwal.fire({
+      icon: icon,
+      position: "top-end",
+      html: message ? message : "message not returned",
+      timer: 1500,
+      timerProgressBar: true,
+      showConfirmButton: false,
+      willClose: () => {
+        clearInterval(timerInterval);
+      },
+    });
+  };
+  console.log("here", role);
   const [data, setData] = useState({
     firstName: "",
     lastName: "",
     age: "",
+    gender: "",
     description: "",
+    image: "",
   });
+  console.log("token", access_token);
   const [selectedImage, setSelectedImage] = useState(null);
-  const handleImageUpload = (event) => {
-    const file = event.target.files[0];
+  const handleImageChange = async (e) => {
+    const file = e.target.files[0];
     setSelectedImage(URL.createObjectURL(file));
+    const base64 = await convertToBase64(file);
+
+    const previousData = data.cloneDeep();
+
+    data = {
+      ...previousData,
+      image: base64,
+    };
+    setData(data);
+    // console.log(base64);
+    setData();
+    console.log(data);
   };
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -20,16 +56,37 @@ const RegisterOrphan = () => {
       [name]: value,
     }));
   };
-  const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     // Handle form submission here
-    console.log("Submitted");
-    console.log("Username:", data.username);
-    console.log("Password:", data.password);
-    navigate("/user");
+    console.log("data:", data);
+    console.log(access_token);
+    try {
+      const response = await API.post(`/orphan/register`, data, {
+        headers: {
+          access_token: access_token,
+        },
+      }).then((res) => res);
+      if (response.status === 200) {
+        Alert("user created successfully", "success");
+        setData({
+          firstName: "",
+          lastName: "",
+          age: "",
+          gender: "",
+          description: "",
+          image: null,
+        });
+        setSelectedImage(null);
+      }
+      console.log("Person registered successfully");
+    } catch (error) {
+      console.error("Failed to register person", error);
+      Alert("Failed to Create User", "error");
+    }
   };
+
   return (
     <div className="h-screen md:h-0 mr-4">
       <h1 className="font-semibold text-3xl text-white">Register Orphan</h1>
@@ -46,8 +103,8 @@ const RegisterOrphan = () => {
             <input
               type="text"
               id="firstName"
-              name="first"
-              value={data.username}
+              name="firstName"
+              value={data.firstName}
               onChange={handleInputChange}
               className="border border-gray-300 px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:lime2 w-full"
               required
@@ -111,9 +168,11 @@ const RegisterOrphan = () => {
               Photo
             </label>
             <input
+              id="image"
+              name="image"
               type="file"
               accept="image/*"
-              onChange={handleImageUpload}
+              onChange={handleImageChange}
               className="mb-4 border border-white bg-white px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:lime2 w-full"
               required
             />
@@ -135,6 +194,9 @@ const RegisterOrphan = () => {
           </label>
           <textarea
             id="description"
+            name="description"
+            value={data.description}
+            onChange={handleInputChange}
             className="border h-216 border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:lime2 w-full"
           ></textarea>
         </div>
@@ -151,5 +213,21 @@ const RegisterOrphan = () => {
     </div>
   );
 };
+const mapStateToProps = createStructuredSelector({
+  access_token: selectAccessToken,
+  role: selectRole,
+});
 
-export default RegisterOrphan;
+function convertToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(file);
+    fileReader.onload = () => {
+      resolve(fileReader.result);
+    };
+    fileReader.onerror = (error) => {
+      reject(error);
+    };
+  });
+}
+export default connect(mapStateToProps)(RegisterOrphan);

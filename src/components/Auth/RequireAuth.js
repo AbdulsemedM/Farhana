@@ -5,7 +5,7 @@ import { selectRole } from "../../redux/user/userSelector";
 
 const RequireAuth = ({ allowedRoles, roles }) => {
   const location = useLocation();
-  console.log("redux",roles)
+  // console.log("redux",roles)
   return allowedRoles === roles ? (
     <Outlet />
   ) : allowedRoles !== roles ? (
