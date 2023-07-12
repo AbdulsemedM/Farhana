@@ -6,10 +6,20 @@ import { selectAccessToken } from "../../redux/user/userSelector";
 import { getOrphanData } from "../../redux/user/userAction";
 import DetailModal from "../../containers/DetailModals/DetailModal";
 import { Link } from "react-router-dom";
+import { Popup } from "semantic-ui-react";
+import EditOrphanModal from "../../containers/EditOrphanModal";
+import DeleteOrphanModal from "../../containers/DeleteOrphanModal";
 
 const OrphanList = ({ access_token }) => {
+  const [delete1, setDelete1] = useState(false);
   const [fiteredOrphan, setfiteredOrphan] = useState([]);
   const dispatch = useDispatch();
+  const [dispatched, setDispatched] = useState(false);
+
+  const [dataToEdit, setDataToEdit] = useState();
+  const handleAssign = () => {
+    setDispatched(true);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -73,6 +83,52 @@ const OrphanList = ({ access_token }) => {
       width: "80px",
       // button: true,
     },
+    {
+      cell: (row) => {
+        return (
+          <div className="whitespace-nowrap">
+            <span
+              className="mx-2 cursor-pointer text-xl"
+              onClick={() => {
+                setDataToEdit(row);
+                handleAssign();
+                setDelete1(false);
+              }}
+            >
+              <Popup
+                content="Edit"
+                trigger={<i className="edit text-lime2 icon"></i>}
+              />
+            </span>
+          </div>
+        );
+      },
+      ignoreRowClick: true,
+      allowOverflow: true,
+    },
+    {
+      cell: (row) => {
+        return (
+          <div className="whitespace-nowrap">
+            <span
+              className="mx-2 cursor-pointer text-xl"
+              onClick={() => {
+                setDataToEdit(row);
+                handleAssign();
+                setDelete1(true);
+              }}
+            >
+              <Popup
+                content="Edit"
+                trigger={<i className="delete text-red icon"></i>}
+              />
+            </span>
+          </div>
+        );
+      },
+      ignoreRowClick: true,
+      allowOverflow: true,
+    },
   ];
 
   const [search, setSearch] = useState("");
@@ -129,6 +185,26 @@ const OrphanList = ({ access_token }) => {
           loading={loading}
         />
       </div>
+      {!delete1 && (
+        <EditOrphanModal
+          title="Edit Orphan"
+          dataToEdit={dataToEdit}
+          edit={true}
+          access_token={access_token}
+          setDispatched={setDispatched}
+          dispatched={dispatched}
+        />
+      )}
+      {delete1 && (
+        <DeleteOrphanModal
+          title="Delete Orphan"
+          dataToEdit={dataToEdit}
+          edit={true}
+          access_token={access_token}
+          setDispatched={setDispatched}
+          dispatched={dispatched}
+        />
+      )}
     </div>
   );
 };
