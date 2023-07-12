@@ -15,13 +15,13 @@ export const setRole = (item) => ({
   type: userActionTypes.ROLE,
   payload: item,
 });
-export const getUserData = () => async (dispatch) => {
+export const getUserData = (access_token) => async (dispatch) => {
   try {
     dispatch({
       type: userActionTypes.FETCH_START,
       payload: true,
     });
-    const userData = await userService.fetchUser();
+    const userData = await userService.fetchUser(access_token);
     dispatch({
       type: userActionTypes.GET_USER,
       payload: userData,
@@ -29,6 +29,24 @@ export const getUserData = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: userActionTypes.GET_USER_ERROR,
+      payload: error,
+    });
+  }
+};
+export const getOrphanData = (access_token) => async (dispatch) => {
+  try {
+    dispatch({
+      type: userActionTypes.FETCH_START,
+      payload: true,
+    });
+    const orphanData = await userService.fetchOrphan(access_token);
+    dispatch({
+      type: userActionTypes.GET_ORPHAN,
+      payload: orphanData,
+    });
+  } catch (error) {
+    dispatch({
+      type: userActionTypes.GET_ORPHAN_ERROR,
       payload: error,
     });
   }

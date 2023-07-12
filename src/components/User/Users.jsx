@@ -24,7 +24,6 @@ const Users = ({ roles, access_token }) => {
       },
     });
   };
-  console.log(access_token)
   // const params = {
   //   access_token: access_token, // Set the access token in the Authorization header
   // };
@@ -59,7 +58,6 @@ const Users = ({ roles, access_token }) => {
     event.preventDefault();
     // Handle form submission here
     try {
-      console.log(data);
       // console.log("access", access_token);
       // API.defaults.headers.common["Authorization"] = `Bearer ${access_token}`;
       // API.defaults.withCredentials = true;

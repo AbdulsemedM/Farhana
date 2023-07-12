@@ -5,6 +5,7 @@ import { selectAccessToken, selectRole } from "../../redux/user/userSelector";
 import { createStructuredSelector } from "reselect";
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
+import { cloneDeep } from 'lodash';
 
 const RegisterOrphan = ({ access_token, role }) => {
   const MySwal = withReactContent(Swal);
@@ -22,7 +23,6 @@ const RegisterOrphan = ({ access_token, role }) => {
       },
     });
   };
-  console.log("here", role);
   const [data, setData] = useState({
     firstName: "",
     lastName: "",
@@ -31,23 +31,20 @@ const RegisterOrphan = ({ access_token, role }) => {
     description: "",
     image: "",
   });
-  console.log("token", access_token);
   const [selectedImage, setSelectedImage] = useState(null);
   const handleImageChange = async (e) => {
     const file = e.target.files[0];
     setSelectedImage(URL.createObjectURL(file));
     const base64 = await convertToBase64(file);
-
-    const previousData = data.cloneDeep();
-
-    data = {
+  
+    const previousData = cloneDeep(data); // Use cloneDeep from lodash
+    const newData = {
       ...previousData,
       image: base64,
     };
-    setData(data);
-    // console.log(base64);
-    setData();
-    console.log(data);
+  
+    setData(newData);
+    console.log(newData);
   };
   const handleInputChange = (e) => {
     const { name, value } = e.target;

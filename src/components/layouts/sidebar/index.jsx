@@ -204,7 +204,7 @@ const Sidebar = ({ setRole, setProfile, setAccessToken }) => {
                 }
           }
           transition={{ duration: 0 }}
-          className="absolute w-fit h-fit md:block z-50 hidden right-2 bottom-3 cursor-pointer"
+          className="absolute w-fit h-fit md:block z-50 hidden text-white right-2 bottom-3 cursor-pointer"
         >
           <IoIosArrowBack size={25} />
         </motion.div>

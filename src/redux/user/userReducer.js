@@ -6,6 +6,7 @@ const INITIAL_STATE = {
   userProfile: {},
   user: [],
   loading: false,
+  orphan: [],
 };
 
 const userReducer = (state = INITIAL_STATE, action) => {
@@ -31,16 +32,28 @@ const userReducer = (state = INITIAL_STATE, action) => {
         ...state,
         loading: action.payload,
       };
-    case userActionTypes.GET_UNION:
+    case userActionTypes.GET_USER:
       return {
         ...state,
         user: action.payload,
         loading: false,
       };
-    case userActionTypes.GET_UNION_ERROR:
+    case userActionTypes.GET_USER_ERROR:
       return {
         ...state,
         user: [],
+        loading: false,
+      };
+    case userActionTypes.GET_ORPHAN:
+      return {
+        ...state,
+        orphan: action.payload,
+        loading: false,
+      };
+    case userActionTypes.GET_ORPHAN_ERROR:
+      return {
+        ...state,
+        orphan: [],
         loading: false,
       };
     default:
