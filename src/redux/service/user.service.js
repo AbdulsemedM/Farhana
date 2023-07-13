@@ -19,9 +19,17 @@ const fetchOrphan = async (access_token) => {
     },
   }).then((res) => res.data);
 };
+const fetchMessage = async (access_token) => {
+  return await API.get(`/message/getAllMessages`, {
+    headers: {
+      access_token: access_token,
+    },
+  }).then((res) => res.data);
+};
 const userService = {
   fetchUser,
   fetchOrphan,
+  fetchMessage,
 };
 
 // const mapStateToProps = createStructuredSelector({

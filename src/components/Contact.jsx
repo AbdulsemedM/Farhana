@@ -1,11 +1,74 @@
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "../containers/Navbar";
 // import { img } from "../constants";
 import img from "../constants";
 import Footer from "../containers/Footer";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+import { API } from "../utils/API";
 
-const Contact = () => {
+const Contact = ({ access_token }) => {
+  const MySwal = withReactContent(Swal);
+  let timerInterval;
+  const Alert = (message, icon) => {
+    MySwal.fire({
+      icon: icon,
+      position: "top-end",
+      html: message ? message : "message not returned",
+      timer: 1500,
+      timerProgressBar: true,
+      showConfirmButton: false,
+      willClose: () => {
+        clearInterval(timerInterval);
+      },
+    });
+  };
+
+  const [data, setData] = useState({
+    fullName: "",
+    email: "",
+    phoneNumber: "",
+    addresss: "",
+    message: "",
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    // Handle form submission here
+    console.log("data:", data);
+    console.log(access_token);
+    try {
+      const response = await API.post(`/message/register`, data, {
+        headers: {
+          access_token: access_token,
+        },
+      }).then((res) => res);
+      if (response.status === 200) {
+        Alert("Message sent successfully", "success");
+        setData({
+          fullName: "",
+          email: "",
+          phoneNumber: "",
+          address: "",
+          message: "",
+        });
+      }
+      console.log("Person registered successfully");
+    } catch (error) {
+      console.error("Failed to register person", error);
+      Alert("Failed to Create User", "error");
+    }
+  };
+
   return (
     <div>
       <div className="h-full w-full bg-midnight  relative">
@@ -60,7 +123,9 @@ const Contact = () => {
             in need. Don't hesitate to reach out to us and let's embark on this
             inspiring journey together.
           </h1>
-          <h1 className="text-5xl font-serif font-semibold text-white p-8 text-center">Get In Touch</h1>
+          <h1 className="text-5xl font-serif font-semibold text-white p-8 text-center">
+            Get In Touch
+          </h1>
           <div className="container mx-auto p-4 max-w-6xl">
             <form className=" mx-auto">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -72,8 +137,12 @@ const Contact = () => {
                     Name
                   </label>
                   <input
+                    name="fullName"
                     type="text"
-                    id="name"
+                    id="fullName"
+                    value={data.fullName}
+                    required
+                    onChange={handleInputChange}
                     className="border border-gray-300 px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:lime2  w-full"
                   />
                 </div>
@@ -86,6 +155,9 @@ const Contact = () => {
                   </label>
                   <input
                     type="email"
+                    name="email"
+                    value={data.email}
+                    onChange={handleInputChange}
                     id="email"
                     className="border border-gray-300 px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:lime2 w-full"
                   />
@@ -102,7 +174,10 @@ const Contact = () => {
                   </label>
                   <input
                     type="tel"
-                    id="phone"
+                    id="phoneNumber"
+                    name="phoneNumber"
+                    value={data.phoneNumber}
+                    onChange={handleInputChange}
                     className="border border-gray-300 px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:lime2 w-full"
                   />
                 </div>
@@ -116,6 +191,9 @@ const Contact = () => {
                   <input
                     type="text"
                     id="address"
+                    name="address"
+                    value={data.address}
+                    onChange={handleInputChange}
                     className="border border-gray-300 px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:lime2 w-full"
                   />
                 </div>
@@ -129,28 +207,34 @@ const Contact = () => {
                 </label>
                 <textarea
                   id="message"
+                  name="message"
+                  value={data.message}
+                  onChange={handleInputChange}
+                  required
                   className="border h-32 border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:lime2 w-full"
                 ></textarea>
               </div>
               <div className="text-center font-bold">
                 <button
                   type="submit"
+                  onClick={(event) => {
+                    handleSubmit(event);
+                  }}
                   className="bg-gradient-to-r from-lime1 to-lime2 hover:from-hover hover:to-white text-night py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:lime2 h-16 w-28"
                 >
                   Submit
                 </button>
               </div>
             </form>
-            
+
             <div className=" text-hover items-start flex flex-col p-2">
               <div className="p-2" />
               <div className="border-0 text-3xl text-hover border-transparent bg rounded-md hover-border-4 p-2">
                 <i
                   className="envelope
               icon"
-                >
-                </i>
-                  AbduMussema22@gmail.com
+                ></i>
+                AbduMussema22@gmail.com
               </div>
               <div className="border-0 text-3xl text-hover border-transparent bg  rounded-md hover-border-4 p-2">
                 <i className="mobile alternate icon"></i>

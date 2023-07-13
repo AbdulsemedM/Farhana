@@ -51,3 +51,21 @@ export const getOrphanData = (access_token) => async (dispatch) => {
     });
   }
 };
+export const getMessageData = (access_token) => async (dispatch) => {
+  try {
+    dispatch({
+      type: userActionTypes.FETCH_START,
+      payload: true,
+    });
+    const orphanData = await userService.fetchMessage(access_token);
+    dispatch({
+      type: userActionTypes.GET_MESSAGE,
+      payload: orphanData,
+    });
+  } catch (error) {
+    dispatch({
+      type: userActionTypes.GET_MESSAGE_ERROR,
+      payload: error,
+    });
+  }
+};

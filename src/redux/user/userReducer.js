@@ -7,6 +7,7 @@ const INITIAL_STATE = {
   user: [],
   loading: false,
   orphan: [],
+  message: [],
 };
 
 const userReducer = (state = INITIAL_STATE, action) => {
@@ -54,6 +55,18 @@ const userReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         orphan: [],
+        loading: false,
+      };
+    case userActionTypes.GET_MESSAGE:
+      return {
+        ...state,
+        message: action.payload,
+        loading: false,
+      };
+    case userActionTypes.GET_MESSAGE_ERROR:
+      return {
+        ...state,
+        message: [],
         loading: false,
       };
     default:
