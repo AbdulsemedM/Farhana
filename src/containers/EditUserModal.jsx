@@ -3,7 +3,6 @@ import { Modal } from "semantic-ui-react";
 import { API } from "../utils/API";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import { cloneDeep } from "lodash";
 
 function exampleReducer(state, action) {
   switch (action.type) {
@@ -16,7 +15,7 @@ function exampleReducer(state, action) {
   }
 }
 
-const EditOrphanModal = ({
+const EditUserModal = ({
   dispatched,
   access_token,
   setDispatched,
@@ -40,45 +39,53 @@ const EditOrphanModal = ({
     });
   };
   const [data, setData] = useState({
-    firstName: dataToEdit?.firstName,
-    lastName: dataToEdit?.lastName,
-    age: dataToEdit?.age,
-    gender: dataToEdit?.gender,
-    description: dataToEdit?.description,
-    image: dataToEdit?.image,
+    fullName: dataToEdit?.fullName,
+    userName: dataToEdit?.userName,
+    password: dataToEdit?.password,
+    confirmPassword: dataToEdit?.password,
+    email: dataToEdit?.email,
+    phoneNumber: dataToEdit?.phoneNumber,
+    role: "admin",
   });
-  const [selectedImage, setSelectedImage] = useState(null);
 
-//   console.log(dataToEdit, "here");
-//   console.log(data, "there");
-//   console.log(access_token);
+  //   const handleImageChange = async (e) => {
+  //     const file = e.target.files[0];
+  //     setSelectedImage(URL.createObjectURL(file));
+  //     const base64 = await convertToBase64(file);
+
+  //     const previousData = cloneDeep(data); // Use cloneDeep from lodash
+  //     const newData = {
+  //       ...previousData,
+  //       image: base64,
+  //     };
+
+  //     setData(newData);
+  //     console.log(newData, "new one");
+  //   };
+  //   console.log(dataToEdit, "here");
+  //   console.log(data, "there");
+  //   console.log(access_token);
   const handleSubmit = async (event) => {
-    // event.preventDefault();
+    event.preventDefault();
     // Handle form submission here
-    // console.log("data:", data);
+    console.log("data:", data);
     try {
-      const response = await API.put(
-        `/orphan/update/${dataToEdit?._id}`,
-        data,
-        {
-          headers: {
-            access_token: access_token,
-          },
-        }
-      ).then((res) => res);
+      const response = await API.put(`/users/update/${dataToEdit?._id}`, data, {
+        headers: {
+          access_token: access_token,
+        },
+      }).then((res) => res);
       if (response.status === 200) {
         Alert("Data Updated successfully", "success");
         setData({
-          firstName: "",
-          lastName: "",
-          age: "",
-          gender: "",
-          description: "",
-          image: "",
+          fullName: "",
+          userName: "",
+          email: "",
+          phoneNumber: "",
+          role: "admin",
         });
         dispatch({ type: "CLOSE_MODAL" });
         setDispatched(false);
-        setSelectedImage(null);
       }
       console.log("Person registered successfully");
     } catch (error) {
@@ -87,21 +94,6 @@ const EditOrphanModal = ({
     }
   };
   /////////////////////////////////////////
-
-  const handleImageChange = async (e) => {
-    const file = e.target.files[0];
-    setSelectedImage(URL.createObjectURL(file));
-    const base64 = await convertToBase64(file);
-
-    const previousData = cloneDeep(data); // Use cloneDeep from lodash
-    const newData = {
-      ...previousData,
-      image: base64,
-    };
-
-    setData(newData);
-    console.log(newData, "new one");
-  };
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setData((prevState) => ({
@@ -133,23 +125,24 @@ const EditOrphanModal = ({
     // dimmer: undefined,
   });
   const { open } = state;
+  //   console.log(dataToEdit)
 
   useEffect(() => {
     dataToEdit &&
       setData({
-        firstName: dataToEdit?.firstName,
-        lastName: dataToEdit?.lastName,
-        age: dataToEdit?.age,
-        gender: dataToEdit?.gender,
-        description: dataToEdit?.description,
-        image: dataToEdit?.image,
+        fullName: dataToEdit?.fullName,
+        userName: dataToEdit?.userName,
+        // password: dataToEdit?.password,
+        // confirmPassword: dataToEdit?.password,
+        email: dataToEdit?.email,
+        phoneNumber: dataToEdit?.phoneNumber,
+        role: "admin",
       });
   }, [dataToEdit, access_token]);
   // console.log("id", selectedUnionId);
 
   useEffect(() => {
     dispatched && dispatch({ type: "OPEN_MODAL" });
-    !dispatched && setSelectedImage(null);
   }, [dispatched]);
 
   return (
@@ -164,20 +157,20 @@ const EditOrphanModal = ({
     >
       <Modal.Header className="text-blue">{title}</Modal.Header>
       <Modal.Content>
-        <form className="max-w-4xl mx-auto" onSubmit={handleSubmit}>
+        <form className="max-w-4xl mx-auto">
           <div className="grid grid-cols-2 gap-3">
             <div className="mb-4">
               <label
-                htmlFor="firstName"
+                htmlFor="fullName"
                 className="text-lg font-semibold text-night"
               >
-                First Name
+                Full Name
               </label>
               <input
                 type="text"
-                id="firstName"
-                name="firstName"
-                value={data.firstName}
+                id="fullName"
+                name="fullName"
+                value={data.fullName}
                 onChange={handleInputChange}
                 className="border border-gray-300 px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:lime2 w-full"
                 required
@@ -185,109 +178,109 @@ const EditOrphanModal = ({
             </div>
             <div className="mb-4">
               <label
-                htmlFor="lastName"
+                htmlFor="userName"
                 className="text-lg font-semibold text-night"
               >
-                Last Name
+                User Name
               </label>
               <input
                 type="text"
-                id="lastName"
-                name="lastName"
-                value={data.lastName}
+                id="userName"
+                name="userName"
+                value={data.userName}
                 onChange={handleInputChange}
                 className="border border-gray-300 px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:lime2 w-full"
                 required
               />
             </div>
           </div>
-          <div className="grid grid-cols-3 gap-2">
-            <div className="mb-4 max-w-[7rem]">
-              <label htmlFor="age" className="text-lg font-semibold text-night">
-                Age
-              </label>
-              <input
-                type="number"
-                id="age"
-                name="age"
-                value={data.age}
-                onChange={handleInputChange}
-                className="border border-gray-300 px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:lime2 w-full"
-                required
-              />
-            </div>
-            <div className="mb-4 max-w-[12rem]">
+          {/* <div className="grid grid-cols-2 gap-2">
+            <div className="mb-4 relative">
               <label
-                htmlFor="gender"
+                htmlFor="password"
                 className="text-lg font-semibold text-night"
               >
-                Gender
+                Password
               </label>
-              <select
-                id="gender"
-                name="gender"
-                value={data.gender}
-                onChange={handleInputChange}
-                className="border border-gray-300 px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:lime2 w-full"
-                required
+              <div className="flex items-center">
+                <input
+                  type={"text"}
+                  id="password"
+                  name="password"
+                  value={data.password}
+                  onChange={handleInputChange}
+                  className="border border-gray-300 px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:lime2 w-full pr-12"
+                  required
+                />
+              </div>
+            </div>
+            <div className="mb-4 relative">
+              <label
+                htmlFor="confirmPassword"
+                className="text-md md:text-lg font-semibold text-night"
               >
-                <option value="">Select Gender</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-              </select>
+                Confirm Password
+              </label>
+              <div className="flex items-center">
+                <input
+                  type={"text"}
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  value={data.confirmPassword}
+                  onChange={handleInputChange}
+                  className="border border-gray-300 px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:lime2 w-full pr-12"
+                  required
+                />
+              </div>
+              {data.password !== data.confirmPassword && (
+                <div className="text-red mt-2">
+                  Password and Confirm Password do not match.
+                </div>
+              )}
+            </div> */}
+          <div className="grid grid-cols-2 gap-2">
+            <div className="flex flex-col">
+              <label
+                htmlFor="email"
+                className="text-lg font-semibold text-night"
+              >
+                Email
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={data.email}
+                onChange={handleInputChange}
+                className="mb-4 border border-night bg-white px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:lime2 w-full"
+                required
+              />
             </div>
             <div className="flex flex-col">
               <label
-                htmlFor="Photo"
+                htmlFor="phoneNumber"
                 className="text-lg font-semibold text-night"
               >
-                Photo
+                Phone Number
               </label>
               <input
-                id="image"
-                name="image"
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
+                type="phoneNumber"
+                id="phoneNumber"
+                name="phoneNumber"
+                value={data.phoneNumber}
+                onChange={handleInputChange}
                 className="mb-4 border border-night bg-white px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:lime2 w-full"
-                
+                required
               />
-              {selectedImage ? (
-                <img
-                  src={selectedImage}
-                  alt="Selected"
-                  className="w-64 h-64 object-cover"
-                />
-              ) : (
-                <img
-                  src={dataToEdit?.image}
-                  alt="Selected"
-                  className="w-64 h-64 object-cover"
-                />
-              )}
             </div>
-          </div>
-          <div className="mb-4">
-            <label
-              htmlFor="description"
-              className="text-lg font-semibold text-night"
-            >
-              Description
-            </label>
-            <textarea
-              id="description"
-              name="description"
-              value={data.description}
-              onChange={handleInputChange}
-              className="border h-216 border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:lime2 w-full"
-            ></textarea>
           </div>
 
           <div className="text-center font-bold p-4">
             <button
+              disabled={data.password !== data.confirmPassword && true}
               type="submit"
-              onClick={() => {
-                handleSubmit();
+              onClick={(event) => {
+                handleSubmit(event);
               }}
               className="bg-gradient-to-r from-lime2 to-lime2 hover:from-lime2 hover:to-lime1 text-night py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:lime2 h-16 w-28"
             >
@@ -300,17 +293,4 @@ const EditOrphanModal = ({
   );
 };
 
-function convertToBase64(file) {
-  return new Promise((resolve, reject) => {
-    const fileReader = new FileReader();
-    fileReader.readAsDataURL(file);
-    fileReader.onload = () => {
-      resolve(fileReader.result);
-    };
-    fileReader.onerror = (error) => {
-      reject(error);
-    };
-  });
-}
-
-export default EditOrphanModal;
+export default EditUserModal;

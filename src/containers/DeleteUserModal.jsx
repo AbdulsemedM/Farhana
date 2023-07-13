@@ -16,7 +16,7 @@ function exampleReducer(state, action) {
   }
 }
 
-const DeleteOrphanModal = ({
+const DeleteUserModal = ({
   dispatched,
   access_token,
   setDispatched,
@@ -41,12 +41,13 @@ const DeleteOrphanModal = ({
   };
 
   const [data, setData] = useState({
-    firstName: dataToEdit?.firstName || "",
-    lastName: dataToEdit?.lastName || "",
-    age: dataToEdit?.age || "",
-    gender: dataToEdit?.gender || "",
-    description: dataToEdit?.description || "",
-    image: dataToEdit?.image || "",
+    fullName: dataToEdit?.fullName,
+    userName: dataToEdit?.userName,
+    // password: dataToEdit?.password,
+    // confirmPassword: dataToEdit?.password,
+    email: dataToEdit?.email,
+    phoneNumber: dataToEdit?.phoneNumber,
+    role: "admin",
   });
   const swalWithBootstrapButtons = Swal.mixin({
     customClass: {
@@ -72,7 +73,7 @@ const DeleteOrphanModal = ({
       }).then(async (result) => {
         if (result.isConfirmed) {
           const response = await API.delete(
-            `/orphan/delete/${dataToEdit?._id}`,
+            `/users/delete/${dataToEdit?._id}`,
             {
               headers: {
                 access_token: access_token,
@@ -82,12 +83,11 @@ const DeleteOrphanModal = ({
           if (response.status === 200) {
             Alert("Data Deleted successfully", "success");
             setData({
-              firstName: "",
-              lastName: "",
-              age: "",
-              gender: "",
-              description: "",
-              image: "",
+              fullName: "",
+              userName: "",
+              email: "",
+              phoneNumber: "",
+              role: "admin",
             });
             dispatch({ type: "CLOSE_MODAL" });
             setDispatched(false);
@@ -165,125 +165,134 @@ const DeleteOrphanModal = ({
     >
       <Modal.Header className="text-blue">{title}</Modal.Header>
       <Modal.Content>
-        <form className="max-w-4xl mx-auto" onSubmit={handleSubmit}>
+        <form className="max-w-4xl mx-auto">
           <div className="grid grid-cols-2 gap-3">
             <div className="mb-4">
               <label
-                htmlFor="firstName"
+                htmlFor="fullName"
                 className="text-lg font-semibold text-night"
               >
-                First Name
+                Full Name
               </label>
               <input
                 type="text"
                 disabled
-                id="firstName"
-                name="firstName"
-                value={data.firstName}
+                id="fullName"
+                name="fullName"
+                value={data.fullName}
                 className="border border-gray-300 px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:lime2 w-full"
                 required
               />
             </div>
             <div className="mb-4">
               <label
-                htmlFor="lastName"
+                htmlFor="userName"
                 className="text-lg font-semibold text-night"
               >
-                Last Name
+                User Name
               </label>
               <input
                 type="text"
+                id="userName"
                 disabled
-                id="lastName"
-                name="lastName"
-                value={data.lastName}
+                name="userName"
+                value={data.userName}
                 className="border border-gray-300 px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:lime2 w-full"
                 required
               />
             </div>
           </div>
-          <div className="grid grid-cols-3 gap-2">
-            <div className="mb-4 max-w-[7rem]">
-              <label htmlFor="age" className="text-lg font-semibold text-night">
-                Age
-              </label>
-              <input
-                type="number"
-                id="age"
-                disabled
-                name="age"
-                value={data.age}
-                className="border border-gray-300 px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:lime2 w-full"
-                required
-              />
-            </div>
-            <div className="mb-4 max-w-[12rem]">
+          <div className="grid grid-cols-2 gap-2">
+            {/* <div className="mb-4 relative">
               <label
-                htmlFor="gender"
+                htmlFor="password"
                 className="text-lg font-semibold text-night"
               >
-                Gender
+                Password
               </label>
-              <select
-                id="gender"
+              <div className="flex items-center">
+                <input
+                  type={"text"}
                 disabled
-                name="gender"
-                value={data.gender}
-                className="border border-gray-300 px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:lime2 w-full"
-                required
+                  id="password"
+                  name="password"
+                  value={data.password}
+                  className="border border-gray-300 px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:lime2 w-full pr-12"
+                  required
+                />
+              </div>
+            </div> */}
+            {/* <div className="mb-4 relative">
+              <label
+                htmlFor="confirmPassword"
+                className="text-md md:text-lg font-semibold text-night"
               >
-                <option value="">Select Gender</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-              </select>
+                Confirm Password
+              </label>
+              <div className="flex items-center">
+                <input
+                  type={"text"}
+                disabled
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  value={data.confirmPassword}
+                  className="border border-gray-300 px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:lime2 w-full pr-12"
+                  required
+                />
+              </div> */}
+            {/* {data.password !== data.confirmPassword && (
+                <div className="text-red mt-2">
+                  Password and Confirm Password do not match.
+                </div>
+              )}
+            </div> */}
+
+            <div className="flex flex-col">
+              <label
+                htmlFor="email"
+                className="text-lg font-semibold text-night"
+              >
+                Email
+              </label>
+              <input
+                type="email"
+                id="email"
+                disabled
+                name="email"
+                value={data.email}
+                className="mb-4 border border-night bg-white px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:lime2 w-full"
+                required
+              />
             </div>
             <div className="flex flex-col">
               <label
-                htmlFor="Photo"
+                htmlFor="phoneNumber"
                 className="text-lg font-semibold text-night"
               >
-                Photo
+                Phone Number
               </label>
               <input
-                id="image"
+                type="phoneNumber"
                 disabled
-                name="image"
-                type="file"
-                accept="image/*"
+                id="phoneNumber"
+                name="phoneNumber"
+                value={data.phoneNumber}
                 className="mb-4 border border-night bg-white px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:lime2 w-full"
+                required
               />
-              {
-                <img
-                  src={dataToEdit?.image}
-                  alt="Selected"
-                  className="w-64 h-64 object-cover"
-                />
-              }
             </div>
-          </div>
-          <div className="mb-4">
-            <label
-              htmlFor="description"
-              className="text-lg font-semibold text-night"
-            >
-              Description
-            </label>
-            <textarea
-              id="description"
-              disabled
-              name="description"
-              value={data.description}
-              className="border h-216 border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:lime2 w-full"
-            ></textarea>
           </div>
 
           <div className="text-center font-bold p-4">
             <button
+              disabled={data.password !== data.confirmPassword && true}
               type="submit"
-              onClick={(event) => handleSubmit(event)}
-              className="bg-gradient-to-r from-red to-lime2 hover:from-delte hover:to-lime1 text-night py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:lime2 h-16 w-28"
+              onClick={(event) => {
+                handleSubmit(event);
+              }}
+              className="bg-gradient-to-r from-lime2 to-lime2 hover:from-lime2 hover:to-lime1 text-night py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:lime2 h-16 w-28"
             >
-              Delete
+              Update
             </button>
           </div>
         </form>
@@ -305,4 +314,4 @@ const DeleteOrphanModal = ({
 //   });
 // }
 
-export default DeleteOrphanModal;
+export default DeleteUserModal;

@@ -5,10 +5,20 @@ import { getUserData } from "../../redux/user/userAction";
 import { selectAccessToken } from "../../redux/user/userSelector";
 import { createStructuredSelector } from "reselect";
 import { Link } from "react-router-dom";
+import { Popup } from "semantic-ui-react";
+import DeleteUserModal from "../../containers/DeleteUserModal";
+import EditUserModal from "../../containers/EditUserModal";
 
 const UserList = ({ access_token }) => {
   const [fiteredUser, setfiteredUser] = useState([]);
   const dispatch = useDispatch();
+  const [dispatched, setDispatched] = useState(false);
+  const [delete1, setDelete1] = useState(false);
+
+  const [dataToEdit, setDataToEdit] = useState();
+  const handleAssign = () => {
+    setDispatched(true);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -48,6 +58,67 @@ const UserList = ({ access_token }) => {
       name: "Phone Number",
       selector: (row) => row.phoneNumber,
       sortable: true,
+    },
+    // {
+    //   cell: (row) => {
+    //     return (
+    //       <div className="whitespace-nowrap">
+    //         <span className="mx-2 cursor-pointer text-xl">
+    //           <DetailModal row={row} users={false} />
+    //         </span>
+    //       </div>
+    //     );
+    //   },
+    //   ignoreRowClick: true,
+    //   allowOverflow: true,
+    //   width: "80px",
+    //   // button: true,
+    // },
+    {
+      cell: (row) => {
+        return (
+          <div className="whitespace-nowrap">
+            <span
+              className="mx-2 cursor-pointer text-xl"
+              onClick={() => {
+                setDataToEdit(row);
+                handleAssign();
+                setDelete1(false);
+              }}
+            >
+              <Popup
+                content="Edit"
+                trigger={<i className="edit text-lime2 icon"></i>}
+              />
+            </span>
+          </div>
+        );
+      },
+      ignoreRowClick: true,
+      allowOverflow: true,
+    },
+    {
+      cell: (row) => {
+        return (
+          <div className="whitespace-nowrap">
+            <span
+              className="mx-2 cursor-pointer text-xl"
+              onClick={() => {
+                setDataToEdit(row);
+                handleAssign();
+                setDelete1(true);
+              }}
+            >
+              <Popup
+                content="Edit"
+                trigger={<i className="delete text-red icon"></i>}
+              />
+            </span>
+          </div>
+        );
+      },
+      ignoreRowClick: true,
+      allowOverflow: true,
     },
   ];
   const [search, setSearch] = useState("");
@@ -102,7 +173,27 @@ const UserList = ({ access_token }) => {
           columns={UserColumn}
           loading={loading}
         />
-      </div>
+      </div>{" "}
+      {!delete1 && (
+        <EditUserModal
+          title="Edit User"
+          dataToEdit={dataToEdit}
+          edit={true}
+          access_token={access_token}
+          setDispatched={setDispatched}
+          dispatched={dispatched}
+        />
+      )}
+      {delete1 && (
+        <DeleteUserModal
+          title="Delete Orphan"
+          dataToEdit={dataToEdit}
+          edit={true}
+          access_token={access_token}
+          setDispatched={setDispatched}
+          dispatched={dispatched}
+        />
+      )}
     </div>
   );
 };
