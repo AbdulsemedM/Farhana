@@ -24,19 +24,19 @@ const Footer = () => {
               Social Media
             </h3>
             <div className="flex">
-              <Link className="text-hover mr-4 hover:text-lime">
+              <Link className="text-hover mr-4  hover:text-lime2">
                 <FaFacebook size={32} />
               </Link>
-              <Link className="text-hover mr-4 hover:text-lime">
+              <Link className="text-hover mr-4  hover:text-lime2">
                 <FaTwitter size={32} />
               </Link>
-              <Link className="text-hover mr-4 hover:text-lime">
+              <Link className="text-hover mr-4  hover:text-lime2">
                 <FaInstagram size={32} />
               </Link>
-              <Link className="text-hover mr-4 hover:text-lime">
+              <Link className="text-hover mr-4  hover:text-lime2">
                 <FaLinkedin size={32} />
               </Link>
-              <Link className="text-hover mr-4 hover:text-lime">
+              <Link className="text-hover mr-4  hover:text-lime2">
                 <FaYoutube size={32} />
               </Link>
             </div>
@@ -46,30 +46,42 @@ const Footer = () => {
                 <i
                   className="envelope
               icon"
-                >
-                </i>
-                  AbduMussema22@gmail.com
+                ></i>
+                salaam.salum81@gmail.com
               </div>
               <div className="border-0 text-hover border-transparent bg  rounded-md hover-border-4 p-2">
                 <i className="mobile alternate icon"></i>
-                +2519-4651-4836
+                +2557-7466-5972
               </div>
             </div>
           </div>
           <div className="w-full md:w-1/2 lg:w-1/4 mb-8 md:mb-0">
-            <h3 className="text-white text-3xl font-semibold mb-4">
-              Additional Details
-            </h3>
-            <p className="text-white text-xl">Lorem ipsum dolor sit amet</p>
-            <p className="text-white text-xl">consectetur adipiscing elit</p>
+            <h3 className="text-white text-3xl font-semibold mb-4">GOTO</h3>
+            <div className="flex flex-col my-4">
+              <Link to={"/"} className="text-white text-xl my-2 hover:text-lime2">
+                Home
+              </Link>
+              <Link to={"/about"} className="text-white text-xl my-2 hover:text-lime2">
+                AboutUs
+              </Link>
+              <Link to={"/services"} className="text-white text-xl my-2 hover:text-lime2">
+                Service
+              </Link>
+              <Link to={"/contact"} className="text-white text-xl my-2 hover:text-lime2">
+                ContactUs
+              </Link>
+              <Link to={"/login"} className="text-white text-xl my-2 hover:text-lime2">
+                Login
+              </Link>
+            </div>
           </div>
         </div>
         <div className="text-xl text-center pt-8">
-        <div className="border-0 text-hover border-transparent  rounded-md hover-border-4 p-2">
-                Copyright 
-                <i className="copyright icon"></i>
-                All Rights Reserved 2023
-              </div>
+          <div className="border-0 text-hover border-transparent  rounded-md hover-border-4 p-2">
+            Copyright
+            <i className="copyright icon"></i>
+            All Rights Reserved 2023
+          </div>
         </div>
       </div>
     </footer>

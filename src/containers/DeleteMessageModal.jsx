@@ -16,7 +16,7 @@ function exampleReducer(state, action) {
   }
 }
 
-const DeleteUserModal = ({
+const DeleteMessageModal = ({
   dispatched,
   access_token,
   setDispatched,
@@ -42,12 +42,10 @@ const DeleteUserModal = ({
 
   const [data, setData] = useState({
     fullName: dataToEdit?.fullName,
-    userName: dataToEdit?.userName,
-    // password: dataToEdit?.password,
-    // confirmPassword: dataToEdit?.password,
+    message: dataToEdit?.message,
+    address: dataToEdit?.address,
     email: dataToEdit?.email,
     phoneNumber: dataToEdit?.phoneNumber,
-    role: "admin",
   });
   const swalWithBootstrapButtons = Swal.mixin({
     customClass: {
@@ -73,7 +71,7 @@ const DeleteUserModal = ({
       }).then(async (result) => {
         if (result.isConfirmed) {
           const response = await API.delete(
-            `/users/delete/${dataToEdit?._id}`,
+            `/message/delete/${dataToEdit?._id}`,
             {
               headers: {
                 access_token: access_token,
@@ -91,7 +89,7 @@ const DeleteUserModal = ({
             });
             dispatch({ type: "CLOSE_MODAL" });
             setDispatched(false);
-            console.log("Person deleted successfully");
+            console.log("Message deleted successfully");
 
             // setSelectedImage(null);
           }
@@ -108,7 +106,7 @@ const DeleteUserModal = ({
       });
     } catch (error) {
       console.error("Failed to delete person", error);
-      Alert("Failed to Delete User", "error");
+      Alert("Failed to Delete Message", "error");
     }
   };
 
@@ -137,17 +135,16 @@ const DeleteUserModal = ({
     open: false,
   });
 
-  //   useEffect(() => {
-  //     dataToEdit &&
-  //       setData({
-  //         firstName: dataToEdit?.firstName || "",
-  //         lastName: dataToEdit?.lastName || "",
-  //         age: dataToEdit?.age || "",
-  //         gender: dataToEdit?.gender || "",
-  //         description: dataToEdit?.description || "",
-  //         image: dataToEdit?.image || "",
-  //       });
-  //   }, [dataToEdit, access_token]);
+  useEffect(() => {
+    dataToEdit &&
+      setData({
+        fullName: dataToEdit?.fullName,
+        message: dataToEdit?.message,
+        address: dataToEdit?.address,
+        email: dataToEdit?.email,
+        phoneNumber: dataToEdit?.phoneNumber,
+      });
+  }, [dataToEdit, access_token]);
 
   useEffect(() => {
     dispatched && dispatch({ type: "OPEN_MODAL" });
@@ -161,6 +158,13 @@ const DeleteUserModal = ({
       onClose={() => {
         dispatch({ type: "CLOSE_MODAL" });
         setDispatched(false);
+        setData({
+          fullName: "",
+          email: "",
+          phoneNumber: "",
+          address: "",
+          message: "",
+        });
       }}
     >
       <Modal.Header className="text-blue">{title}</Modal.Header>
@@ -184,69 +188,6 @@ const DeleteUserModal = ({
                 required
               />
             </div>
-            <div className="mb-4">
-              <label
-                htmlFor="userName"
-                className="text-lg font-semibold text-night"
-              >
-                User Name
-              </label>
-              <input
-                type="text"
-                id="userName"
-                disabled
-                name="userName"
-                value={data.userName}
-                className="border border-gray-300 px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:lime2 w-full"
-                required
-              />
-            </div>
-          </div>
-          <div className="grid grid-cols-2 gap-2">
-            {/* <div className="mb-4 relative">
-              <label
-                htmlFor="password"
-                className="text-lg font-semibold text-night"
-              >
-                Password
-              </label>
-              <div className="flex items-center">
-                <input
-                  type={"text"}
-                disabled
-                  id="password"
-                  name="password"
-                  value={data.password}
-                  className="border border-gray-300 px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:lime2 w-full pr-12"
-                  required
-                />
-              </div>
-            </div> */}
-            {/* <div className="mb-4 relative">
-              <label
-                htmlFor="confirmPassword"
-                className="text-md md:text-lg font-semibold text-night"
-              >
-                Confirm Password
-              </label>
-              <div className="flex items-center">
-                <input
-                  type={"text"}
-                disabled
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  value={data.confirmPassword}
-                  className="border border-gray-300 px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:lime2 w-full pr-12"
-                  required
-                />
-              </div> */}
-            {/* {data.password !== data.confirmPassword && (
-                <div className="text-red mt-2">
-                  Password and Confirm Password do not match.
-                </div>
-              )}
-            </div> */}
-
             <div className="flex flex-col">
               <label
                 htmlFor="email"
@@ -264,6 +205,8 @@ const DeleteUserModal = ({
                 required
               />
             </div>
+          </div>
+          <div className="grid grid-cols-2 gap-2">
             <div className="flex flex-col">
               <label
                 htmlFor="phoneNumber"
@@ -281,6 +224,39 @@ const DeleteUserModal = ({
                 required
               />
             </div>
+            <div className="flex flex-col">
+              <label
+                htmlFor="Address"
+                className="text-lg font-semibold text-night"
+              >
+                Address
+              </label>
+              <input
+                type="address"
+                disabled
+                id="address"
+                name="address"
+                value={data.address}
+                className="mb-4 border border-night bg-white px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:lime2 w-full"
+                required
+              />
+            </div>
+          </div>
+          <div className="mb-4">
+            <label
+              htmlFor="message"
+              className="text-lg font-semibold text-silver"
+            >
+              Message
+            </label>
+            <textarea
+              id="message"
+              name="message"
+              value={data.message}
+              required
+              disabled
+              className="border h-32 border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:lime2 w-full"
+            ></textarea>
           </div>
 
           <div className="text-center font-bold p-4">
@@ -314,4 +290,4 @@ const DeleteUserModal = ({
 //   });
 // }
 
-export default DeleteUserModal;
+export default DeleteMessageModal;

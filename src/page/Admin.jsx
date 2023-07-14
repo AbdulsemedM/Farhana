@@ -9,6 +9,7 @@ import Users from "../components/User/Users";
 import OrphanList from "../components/User/OrphanList";
 import UserList from "../components/User/UserList";
 import Dashboard from "../components/User/Dashboard";
+import PrivacyandPolicy from "../components/PrivacyandPolicy";
 
 const Admin = () => {
   return (
@@ -20,6 +21,7 @@ const Admin = () => {
         <Route path="orphanList" element={<OrphanList />} />
         <Route path="users" element={<Users />} />
         <Route path="userList" element={<UserList />} />
+        <Route path="Settings/privacy" element={<PrivacyandPolicy />} />
         <Route path="settings" element={<Settings />} />
         <Route path="build/:bID" element={<Build />} />
         <Route path="analytics/:aID" element={<Analytics />} />

@@ -15,7 +15,7 @@ function DetailModal({ row, users, access_token }) {
     setOrphan([]);
     const fetchData = async () => {
       users
-        ? await API.get(`/users/getUser/${row?._id}`, {
+        ? await API.get(`/message/getMessage/${row?._id}`, {
             headers: {
               access_token: access_token,
             },
@@ -48,7 +48,7 @@ function DetailModal({ row, users, access_token }) {
         </button>
       }
     >
-      <Modal.Header>{row?.name}</Modal.Header>
+      <Modal.Header>{row?.name ? row?.name : row?.fullName}</Modal.Header>
       <Modal.Content>
         <Modal.Description>
           <DetailToPrint

@@ -29,7 +29,7 @@ const Contact = ({ access_token }) => {
     fullName: "",
     email: "",
     phoneNumber: "",
-    addresss: "",
+    address: "",
     message: "",
   });
 
@@ -234,11 +234,11 @@ const Contact = ({ access_token }) => {
                   className="envelope
               icon"
                 ></i>
-                AbduMussema22@gmail.com
+                salaam.salum81@gmail.com
               </div>
               <div className="border-0 text-3xl text-hover border-transparent bg  rounded-md hover-border-4 p-2">
                 <i className="mobile alternate icon"></i>
-                +2519-4651-4836
+                +2557-7466-5972
               </div>
             </div>
           </div>

@@ -119,7 +119,7 @@ const OrphanList = ({ access_token }) => {
               }}
             >
               <Popup
-                content="Edit"
+                content="Delete"
                 trigger={<i className="delete text-red icon"></i>}
               />
             </span>
