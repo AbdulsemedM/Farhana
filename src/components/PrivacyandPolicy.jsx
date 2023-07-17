@@ -107,7 +107,7 @@ const PrivacyandPolicy = () => {
         questions about this Privacy Policy, please contact us: - By email:
         [Email Address] - By visiting this page on our website: [Website URL] -
         By phone: [Phone Number] Please feel free to reach out to us if you have
-        any concerns or inquiries regarding our privacy practice.
+        any concerns or inquiries regarding our privacy practices.
       </div>
     </div>
   );
