@@ -234,7 +234,7 @@ const Contact = ({ access_token }) => {
                   className="envelope
               icon"
                 ></i>
-                salaam.salum81@gmail.com
+                farhanacharitableznz@gmail.com
               </div>
               <div className="border-0 text-3xl text-hover border-transparent bg  rounded-md hover-border-4 p-2">
                 <i className="mobile alternate icon"></i>
