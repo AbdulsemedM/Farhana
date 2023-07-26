@@ -105,7 +105,7 @@ const PrivacyandPolicy = () => {
         periodically for any changes. Changes to this Privacy Policy are
         effective when they are posted on this page. Contact Us If you have any
         questions about this Privacy Policy, please contact us: - By email:
-        [Email Address] - By visiting this page on our website: [Website URL] -
+        [Email Address] - By visiting this page on our website: www.farhanacharitable.com -
         By phone: [Phone Number] Please feel free to reach out to us if you have
         any concerns or inquiries regarding our privacy practices.
       </div>
