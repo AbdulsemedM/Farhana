@@ -104,11 +104,11 @@ const Home = () => {
           </Link>
         </div>
         <div className="p-8" />
-        <div>
+        {/* <div>
           <button onClick={getDeviceID}>
             Click here to get your device ID
           </button>
-        </div>
+        </div> */}
       </div>
       <Footer />
       <div />
