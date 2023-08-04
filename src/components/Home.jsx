@@ -1,11 +1,17 @@
 import React from "react";
 import Navbar from "../containers/Navbar";
 // import { img } from "../constants";
-import img  from "../constants";
+import img from "../constants";
 import Footer from "../containers/Footer";
 import { Link } from "react-router-dom";
 
 const Home = () => {
+  const getDeviceID = () => {
+    const deviceID = navigator.userAgent; // This is the user agent string
+
+    // Now you can use the deviceID or send it to the server for processing or storage
+    console.log("User Agent (Device ID):", deviceID);
+  };
   return (
     <div>
       <div className="h-full w-full bg-midnight  relative">
@@ -98,6 +104,11 @@ const Home = () => {
           </Link>
         </div>
         <div className="p-8" />
+        <div>
+          <button onClick={getDeviceID}>
+            Click here to get your device ID
+          </button>
+        </div>
       </div>
       <Footer />
       <div />
