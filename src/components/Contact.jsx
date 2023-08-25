@@ -44,8 +44,8 @@ const Contact = ({ access_token }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     // Handle form submission here
-    console.log("data:", data);
-    console.log(access_token);
+    // console.log("data:", data);
+    // console.log(access_token);
     try {
       const response = await API.post(`/message/register`, data, {
         headers: {
@@ -62,7 +62,7 @@ const Contact = ({ access_token }) => {
           message: "",
         });
       }
-      console.log("Person registered successfully");
+      // console.log("Person registered successfully");
     } catch (error) {
       console.error("Failed to register person", error);
       Alert("Failed to Create User", "error");

@@ -80,7 +80,7 @@ const EditOrphanModal = ({
         setDispatched(false);
         setSelectedImage(null);
       }
-      console.log("Person registered successfully");
+      // console.log("Person registered successfully");
     } catch (error) {
       console.error("Failed to register person", error);
       Alert("Failed to Create User", "error");
@@ -100,7 +100,7 @@ const EditOrphanModal = ({
     };
 
     setData(newData);
-    console.log(newData, "new one");
+    // console.log(newData, "new one");
   };
   const handleInputChange = (e) => {
     const { name, value } = e.target;

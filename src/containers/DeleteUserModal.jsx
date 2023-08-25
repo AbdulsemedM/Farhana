@@ -91,7 +91,7 @@ const DeleteUserModal = ({
             });
             dispatch({ type: "CLOSE_MODAL" });
             setDispatched(false);
-            console.log("Person deleted successfully");
+            // console.log("Person deleted successfully");
 
             // setSelectedImage(null);
           }

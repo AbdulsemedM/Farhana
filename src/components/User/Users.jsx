@@ -66,7 +66,7 @@ const Users = ({ roles, access_token }) => {
           access_token: access_token,
         },
       }).then((res) => res);
-      console.log(response.status);
+      // console.log(response.status);
       if (response.status === 200) {
         Alert("user created successfully", "success");
         setData({

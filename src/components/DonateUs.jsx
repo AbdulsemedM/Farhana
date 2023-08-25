@@ -7,11 +7,7 @@ import Footer from "../containers/Footer";
 const Card = ({ image, title, description }) => {
   return (
     <div className="max-w-lg sm:m-2 mx-auto bg-night shadow-md rounded-md overflow-hidden">
-      <img
-        src={image}
-        alt="ban"
-        className="w-ful object-cover p-2"
-      />
+      <img src={image} alt="ban" className="w-ful object-cover p-2" />
       <div className="p-4">
         <h2 className="text-xl text-white font-semibold mb-2">{title}</h2>
         <p className="text-silver">{description}</p>
@@ -20,34 +16,19 @@ const Card = ({ image, title, description }) => {
   );
 };
 
-
-
 const DonateUs = () => {
   const cards = [
     {
-      image: "https://coopbankoromia.com.et/wp-content/uploads/2021/12/Cooperative_Bank_of_Oromia.png",
-      title: "Cooperative Bank of Oromia",
-      description: "Donate Us through our CBO bank account Number 102220133387",
+      image: "https://pbzbank.co.tz/image/001.jpg",
+      title: "PBZ Islamic Bank",
+      description:
+        "Donate Us through our PBZ Islamic bank account Number 0839520001 in Tanzanian shilings",
     },
     {
-      image: "https://upload.wikimedia.org/wikipedia/en/6/6c/CBE_SA.png",
-      title: "Commercial Bank Of Ethiopia",
-      description: "Send your charity through our CBE account Number 102220133387",
-    },
-    {
-      image: "https://upload.wikimedia.org/wikipedia/commons/3/33/Awash_International_Bank.png",
-      title: "Awash Bank",
-      description: "Donate Us through our CBO bank account Number 102220133387",
-    },
-    {
-      image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/PayPal.svg/2560px-PayPal.svg.png",
-      title: "Paypal Account",
-      description: "Donate Us through our paypal account andumu12@gmail.com",
-    },
-    {
-      image: "https://assets.stickpng.com/images/62051a764e162f000480edba.png",
-      title: "Western Union",
-      description: "Donate Us through our CBO bank account Number 102220133387",
+      image: "https://pbzbank.co.tz/image/001.jpg",
+      title: "PBZ Islamic Bank",
+      description:
+        "Donate Us through our PBZ Islamic bank account Number 0839520002 in USD",
     },
   ];
   return (
@@ -95,18 +76,20 @@ const DonateUs = () => {
           />
         </div>
         <div>
-          <p className="text-4xl text-silver text-center font-serif font-semibold pb-3">Donate Us Through</p>
+          <p className="text-4xl text-silver text-center font-serif font-semibold pb-3">
+            Donate Us Through
+          </p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 pb-4">
-      {cards.map((card, index) => (
-        <Card
-          key={index}
-          image={card.image}
-          title={card.title}
-          description={card.description}
-        />
-      ))}
-    </div>
+          {cards.map((card, index) => (
+            <Card
+              key={index}
+              image={card.image}
+              title={card.title}
+              description={card.description}
+            />
+          ))}
+        </div>
       </div>
       <Footer />
     </div>

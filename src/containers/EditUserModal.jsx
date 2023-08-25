@@ -87,7 +87,7 @@ const EditUserModal = ({
         dispatch({ type: "CLOSE_MODAL" });
         setDispatched(false);
       }
-      console.log("Person registered successfully");
+      // console.log("Person registered successfully");
     } catch (error) {
       console.error("Failed to register person", error);
       Alert("Failed to Create User", "error");

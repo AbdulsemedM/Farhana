@@ -5,7 +5,7 @@ import { selectAccessToken, selectRole } from "../../redux/user/userSelector";
 import { createStructuredSelector } from "reselect";
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from "lodash";
 
 const RegisterOrphan = ({ access_token, role }) => {
   const MySwal = withReactContent(Swal);
@@ -36,15 +36,15 @@ const RegisterOrphan = ({ access_token, role }) => {
     const file = e.target.files[0];
     setSelectedImage(URL.createObjectURL(file));
     const base64 = await convertToBase64(file);
-  
+
     const previousData = cloneDeep(data); // Use cloneDeep from lodash
     const newData = {
       ...previousData,
       image: base64,
     };
-  
+
     setData(newData);
-    console.log(newData);
+    // console.log(newData);
   };
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -57,8 +57,8 @@ const RegisterOrphan = ({ access_token, role }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     // Handle form submission here
-    console.log("data:", data);
-    console.log(access_token);
+    // console.log("data:", data);
+    // console.log(access_token);
     try {
       const response = await API.post(`/orphan/register`, data, {
         headers: {
@@ -77,7 +77,7 @@ const RegisterOrphan = ({ access_token, role }) => {
         });
         setSelectedImage(null);
       }
-      console.log("Person registered successfully");
+      // console.log("Person registered successfully");
     } catch (error) {
       console.error("Failed to register person", error);
       Alert("Failed to Create User", "error");

@@ -89,7 +89,7 @@ const DeleteMessageModal = ({
             });
             dispatch({ type: "CLOSE_MODAL" });
             setDispatched(false);
-            console.log("Message deleted successfully");
+            // console.log("Message deleted successfully");
 
             // setSelectedImage(null);
           }

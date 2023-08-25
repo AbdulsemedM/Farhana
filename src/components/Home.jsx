@@ -6,12 +6,12 @@ import Footer from "../containers/Footer";
 import { Link } from "react-router-dom";
 
 const Home = () => {
-  const getDeviceID = () => {
-    const deviceID = navigator.userAgent; // This is the user agent string
+  // const getDeviceID = () => {
+  //   const deviceID = navigator.userAgent; // This is the user agent string
 
-    // Now you can use the deviceID or send it to the server for processing or storage
-    console.log("User Agent (Device ID):", deviceID);
-  };
+  //   // Now you can use the deviceID or send it to the server for processing or storage
+  //   console.log("User Agent (Device ID):", deviceID);
+  // };
   return (
     <div>
       <div className="h-full w-full bg-midnight  relative">

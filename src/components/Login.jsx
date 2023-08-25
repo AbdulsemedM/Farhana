@@ -36,12 +36,12 @@ const Login = ({ setRole, setProfile, setAccessToken }) => {
     try {
       // console.log("data", data);
       const response = await API.post("/auth/signin", data).then((res) => res);
-      console.log(response.data);
+      // console.log(response.data);
       if (response.status === 200) {
         const access_token = response.data.token;
         const decoded = jwtDecode(access_token);
-        console.log(decoded?.id);
-        console.log(access_token);
+        // console.log(decoded?.id);
+        // console.log(access_token);
         setAccessToken(access_token);
         setRole(response.data.role);
         setProfile(response.data);
@@ -65,7 +65,7 @@ const Login = ({ setRole, setProfile, setAccessToken }) => {
         setMessage("Something went wrong");
       }
       // setLoading(false);
-      console.log(message);
+      // console.log(message);
     }
 
     // console.log("Submitted");
